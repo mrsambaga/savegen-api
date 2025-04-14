@@ -1,33 +1,33 @@
 package repositories
 
 import (
-	"database/sql"
 	"savegen-api/entity"
+
+	"gorm.io/gorm"
 )
 
-type BookRepository struct {
-	db *sql.DB
+type BookRepository interface {
+	GetAllBooks() ([]entity.Book, error)
 }
 
-func NewBookRepository(db *sql.DB) *BookRepository {
-	return &BookRepository{db: db}
+type bookRepositoryImp struct {
+	db *gorm.DB
 }
 
-func (r *BookRepository) GetAllBooks() ([]entity.Book, error) {
-	rows, err := r.db.Query("SELECT id, title, author, price FROM books ORDER BY id")
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
+type BookRepositoryConfig struct {
+	DB *gorm.DB
+}
 
+func NewBookRepository(cfg *BookRepositoryConfig) BookRepository {
+	return &bookRepositoryImp{db: cfg.DB}
+}
+
+func (r *bookRepositoryImp) GetAllBooks() ([]entity.Book, error) {
 	var books []entity.Book
-	for rows.Next() {
-		var book entity.Book
-		err := rows.Scan(&book.ID, &book.Title, &book.Author, &book.Price)
-		if err != nil {
-			return nil, err
-		}
-		books = append(books, book)
+	
+	result := r.db.Find(&books)
+	if result.Error != nil {
+		return nil, result.Error
 	}
 
 	return books, nil
