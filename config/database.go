@@ -1,29 +1,39 @@
 package config
 
 import (
-	"fmt"
 	"log"
+	"os"
 
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
+	"github.com/joho/godotenv"
 )
 
-const (
-	host     = "localhost"
-	port     = 5432
-	user     = "postgres"
-	password = "postgres"
-	dbname   = "bookstore"
+type dbConfig struct {
+	Host     string
+	User     string
+	Password string
+	DBName   string
+	Port     string
+}
+
+var (
+	DBConfig = dbConfig{
+		Host:     getENV("DB_HOST", ""),
+		User:     getENV("DB_USER", ""),
+		Password: getENV("DB_PASSWORD", ""),
+		DBName:   getENV("DB_NAME", ""),
+		Port:     getENV("DB_PORT", ""),
+	}
 )
 
-func GetDB() *gorm.DB {
-	dsn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
-		host, port, user, password, dbname)
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+func getENV(key, defaultVal string) string {
+	err := godotenv.Load()
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("Error loading .env file: %v", err)
 	}
 
-	fmt.Println("Successfully connected to PostgreSQL database!")
-	return db
-} 
+	env := os.Getenv(key)
+	if env == "" {
+		return defaultVal
+	}
+	return env
+}

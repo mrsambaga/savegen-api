@@ -1,22 +1,20 @@
 package main
 
 import (
-	"net/http"
+	"log"
+	"savegen-api/db"
 
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	// Create a new Gin router
+	err := db.Connect()
+	if err != nil {
+		log.Println("Failed to connect DB", err)
+		return
+	}
+	
 	r := gin.Default()
 
-	// Health check endpoint
-	r.GET("/health", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"status": "ok",
-		})
-	})
-
-	// Start the server
 	r.Run(":8080")
 } 
