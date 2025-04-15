@@ -1,13 +1,14 @@
 package config
 
 import (
+	"fmt"
 	"log"
 	"os"
 
 	"github.com/joho/godotenv"
 )
 
-type dbConfig struct {
+type DBConfig struct {
 	Host     string
 	User     string
 	Password string
@@ -15,25 +16,32 @@ type dbConfig struct {
 	Port     string
 }
 
-var (
-	DBConfig = dbConfig{
-		Host:     getENV("DB_HOST", ""),
-		User:     getENV("DB_USER", ""),
-		Password: getENV("DB_PASSWORD", ""),
-		DBName:   getENV("DB_NAME", ""),
-		Port:     getENV("DB_PORT", ""),
-	}
-)
 
-func getENV(key, defaultVal string) string {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatalf("Error loading .env file: %v", err)
+func NewDBConfig() (*DBConfig, error) {
+	if err := godotenv.Load(); err != nil {
+		log.Printf("Warning: Error loading .env file: %v", err)
 	}
 
-	env := os.Getenv(key)
-	if env == "" {
+	return &DBConfig{
+		Host:     getEnv("DB_HOST", ""),
+		User:     getEnv("DB_USER", ""),
+		Password: getEnv("DB_PASSWORD", ""),
+		DBName:   getEnv("DB_NAME", ""),
+		Port:     getEnv("DB_PORT", ""),
+	}, nil
+}
+
+func (c *DBConfig) DSN() string {
+	return fmt.Sprintf(
+		"host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Jakarta",
+		c.Host, c.User, c.Password, c.DBName, c.Port,
+	)
+}
+
+func getEnv(key, defaultVal string) string {
+	val := os.Getenv(key)
+	if val == "" {
 		return defaultVal
 	}
-	return env
+	return val
 }

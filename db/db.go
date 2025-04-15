@@ -1,7 +1,6 @@
 package db
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"savegen-api/config"
@@ -11,10 +10,7 @@ import (
 	"gorm.io/gorm/logger"
 )
 
-var (
-	c  = config.DBConfig
-	db *gorm.DB
-)
+var db *gorm.DB
 
 func getLogger() logger.Interface {
 	return logger.New(
@@ -25,20 +21,34 @@ func getLogger() logger.Interface {
 	)
 }
 
-func Connect() (err error) {
-	dsn := fmt.Sprintf("host=%v user=%v password=%v dbname=%v port=%v sslmode=disable TimeZone=Asia/Jakarta",
-		c.Host,
-		c.User,
-		c.Password,
-		c.DBName,
-		c.Port,
-	)
-	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{
+func Connect() error {
+	dbConfig, err := config.NewDBConfig()
+	if err != nil {
+		return err
+	}
+
+	db, err = gorm.Open(postgres.Open(dbConfig.DSN()), &gorm.Config{
 		Logger: getLogger(),
 	})
-	return
+	if err != nil {
+		return err
+	}
+	
+	log.Println("Database connected successfully")
+	return nil
 }
 
 func Get() *gorm.DB {
 	return db
+}
+
+func Close() error {
+	if db != nil {
+		sqlDB, err := db.DB()
+		if err != nil {
+			return err
+		}
+		return sqlDB.Close()
+	}
+	return nil
 }
