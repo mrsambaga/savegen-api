@@ -3,8 +3,7 @@ package main
 import (
 	"log"
 	"savegen-api/db"
-
-	"github.com/gin-gonic/gin"
+	"savegen-api/server"
 )
 
 func main() {
@@ -13,8 +12,6 @@ func main() {
 		log.Println("Failed to connect DB", err)
 		return
 	}
-	
-	r := gin.Default()
 
-	r.Run(":8080")
+	server.Init()
 } 
