@@ -3,14 +3,14 @@ package server
 import (
 	"log"
 	"savegen-api/db"
-	"savegen-api/repositories"
+	"savegen-api/repository"
 	"savegen-api/usecase"
 
 	"github.com/gin-gonic/gin"
 )
 
 func createRouter() *gin.Engine {
-	bookRepository := repositories.NewBookRepository(&repositories.BookRepositoryConfig{
+	bookRepository := repository.NewBookRepository(&repository.BookRepositoryConfig{
 		DB: db.Get(),
 	})
 

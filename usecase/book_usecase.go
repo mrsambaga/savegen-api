@@ -2,7 +2,7 @@ package usecase
 
 import (
 	"savegen-api/entity"
-	"savegen-api/repositories"
+	"savegen-api/repository"
 )
 
 type BookUsecase interface {
@@ -10,11 +10,11 @@ type BookUsecase interface {
 }
 
 type bookUsecase struct {
-	bookRepository repositories.BookRepository
+	bookRepository repository.BookRepository
 }
 
 type BookUsecaseConfig struct {
-	BookRepository repositories.BookRepository
+	BookRepository repository.BookRepository
 }
 
 func NewBookUsecase(cfg *BookUsecaseConfig) BookUsecase {
