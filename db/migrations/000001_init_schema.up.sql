@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS transactions (
     amount DECIMAL(10,2) NOT NULL,
     type INTEGER NOT NULL,
     category INTEGER NOT NULL,
+    detail VARCHAR(500) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (type) REFERENCES transaction_types(id),
