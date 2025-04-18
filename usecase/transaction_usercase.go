@@ -7,6 +7,7 @@ import (
 
 type TransactionUsecase interface {
 	GetTransactionsByUserId(userId int) ([]entity.Transaction, error)
+	GetTransactionByType(typeName string) ([]entity.Transaction, error)
 }
 
 type transactionUsecase struct {
@@ -28,6 +29,13 @@ func (t *transactionUsecase) GetTransactionsByUserId(userId int) ([]entity.Trans
 	return result, nil
 }
 
+func (t *transactionUsecase) GetTransactionByType(typeName string) ([]entity.Transaction, error) {
+	result, err := t.transactionRepository.GetTransactionByType(typeName)
+	if err != nil {
+		return nil, err
+	}
 
+	return result, nil
+}
 
 

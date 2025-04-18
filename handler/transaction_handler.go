@@ -41,3 +41,23 @@ func (h *Handler) GetTransactionsByUserId(c *gin.Context) {
 	})
 }
 
+func (h *Handler) GetTransactionByType(c *gin.Context) {
+	typeName := c.Param("type_name")
+
+	transactions, err := h.transactionUsecase.GetTransactionByType(typeName)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{	
+			"code":     "INTERNAL_SERVER_ERROR",
+			"messages": err.Error(),
+			"data":     nil,
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"code":     "SUCCESS",
+		"messages": "Success",
+		"data":     transactions,
+	})
+}
+
