@@ -1,12 +1,13 @@
 package usecase
 
 import (
+	"savegen-api/dto"
 	"savegen-api/entity"
 	"savegen-api/repository"
 )
 
 type TransactionUsecase interface {
-	GetTransactions(filters map[string]interface{}) ([]entity.Transaction, error)
+	GetTransactions(request dto.TransactionRequest) ([]entity.Transaction, error)
 }
 
 type transactionUsecase struct {
@@ -19,8 +20,8 @@ func NewTransactionUsecase(transactionRepository repository.TransactionRepositor
 	}
 }
 
-func (t *transactionUsecase) GetTransactions(filters map[string]interface{}) ([]entity.Transaction, error) {
-	result, err := t.transactionRepository.GetTransactions(filters)
+func (t *transactionUsecase) GetTransactions(request dto.TransactionRequest) ([]entity.Transaction, error) {
+	result, err := t.transactionRepository.GetTransactions(request)
 	if err != nil {
 		return nil, err
 	}

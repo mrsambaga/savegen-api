@@ -1,13 +1,14 @@
 package repository
 
 import (
+	"savegen-api/dto"
 	"savegen-api/entity"
 
 	"gorm.io/gorm"
 )
 
 type TransactionRepository interface {
-	GetTransactions(filters map[string]interface{}) ([]entity.Transaction, error)
+	GetTransactions(request dto.TransactionRequest) ([]entity.Transaction, error)
 }
 
 type transactionRepository struct {
@@ -22,21 +23,16 @@ func NewTransactionRepository(cfg *TransactionRepositoryConfig) TransactionRepos
 	return &transactionRepository{db: cfg.DB}
 }
 
-func (r *transactionRepository) GetTransactions(filters map[string]interface{}) ([]entity.Transaction, error) {
+func (r *transactionRepository) GetTransactions(request dto.TransactionRequest) ([]entity.Transaction, error) {
 	var transactions []entity.Transaction
 
-	query := r.db.
-		Joins("TransactionType").
-		Joins("TransactionCategory")
+	query := r.db.Joins("TransactionType").Joins("TransactionCategory")
 
-	if userId, ok := filters["user_id"]; ok {
-		query = query.Where("transactions.user_id = ?", userId)
+	if request.UserID != nil {
+		query = query.Where("transactions.user_id = ?", request.UserID)
 	}
-	if typeName, ok := filters["type_name"]; ok {
-		query = query.Where("transaction_types.name = ?", typeName)
-	}
-	if categoryName, ok := filters["category_name"]; ok {
-		query = query.Where("transaction_categories.name = ?", categoryName)
+	if request.TypeName != nil {
+		query = query.Where("transaction_types.name = ?", request.TypeName)
 	}
 
 	result := query.Find(&transactions)

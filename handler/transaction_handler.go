@@ -2,8 +2,8 @@ package handler
 
 import (
 	"net/http"
+	"savegen-api/dto"
 	"savegen-api/usecase"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -13,30 +13,17 @@ type TransactionHandler struct {
 }
 
 func (h *Handler) GetTransactions(c *gin.Context) {
-	filters := make(map[string]interface{})
-
-	if userId := c.Query("user_id"); userId != "" {
-		userIdInt, err := strconv.Atoi(userId)
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"code":     "BAD_REQUEST",
-				"messages": "Invalid user_id",
-				"data":     nil,
-			})
-			return
-		}
-		filters["user_id"] = userIdInt
+	var request dto.TransactionRequest
+	if err := c.ShouldBindQuery(&request); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code":     "BAD_REQUEST",
+			"messages": "Invalid request parameters",
+			"data":     nil,
+		})
+		return
 	}
 
-	if typeName := c.Query("type_name"); typeName != "" {
-		filters["type_name"] = typeName
-	}
-
-	if categoryName := c.Query("category_name"); categoryName != "" {
-		filters["category_name"] = categoryName
-	}
-
-	transactions, err := h.transactionUsecase.GetTransactions(filters)
+	transactions, err := h.transactionUsecase.GetTransactions(request)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"code":     "INTERNAL_SERVER_ERROR",
@@ -46,9 +33,24 @@ func (h *Handler) GetTransactions(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"code":     "SUCCESS",
-		"messages": "Success",
-		"data":     transactions,
-	})
+	var responseData []dto.TransactionResponse
+	for _, t := range transactions {
+		responseData = append(responseData, dto.TransactionResponse{
+			ID:        				t.ID,
+			UserID:    				t.UserID,
+			Amount:    				t.Amount,
+			TransactionType:      	t.TransactionType.Name,
+			TransactionCategory:  	t.TransactionCategory.Name,
+			Detail:    				t.Detail,
+			CreatedAt: 				t.CreatedAt,
+		})
+	}
+
+	response := dto.TransactionListResponse{
+		Code:     "SUCCESS",
+		Messages: "Success",
+		Data:     responseData,
+	}
+
+	c.JSON(http.StatusOK, response)
 }
