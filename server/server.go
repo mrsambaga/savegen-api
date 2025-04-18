@@ -9,6 +9,7 @@ import (
 
 type RouterConfig struct {
 	BookUsecase usecase.BookUsecase
+	TransactionUsecase usecase.TransactionUsecase
 }
 
 func NewRouter(cfg *RouterConfig) *gin.Engine {
@@ -16,9 +17,11 @@ func NewRouter(cfg *RouterConfig) *gin.Engine {
 
 	h := handler.NewHandler(&handler.HandlerConfig{
 		BookUsecase: cfg.BookUsecase,
+		TransactionUsecase: cfg.TransactionUsecase,
 	})
 
 	router.GET("/books", h.GetBooks)
-
+	router.GET("/transactions", h.GetTransactionsByUserId)
+	
 	return router
 }
