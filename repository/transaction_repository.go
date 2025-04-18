@@ -7,8 +7,7 @@ import (
 )
 
 type TransactionRepository interface {
-	GetTransactionsByUserId(userId int) ([]entity.Transaction, error)
-	GetTransactionByType(typeName string) ([]entity.Transaction, error)
+	GetTransactions(filters map[string]interface{}) ([]entity.Transaction, error)
 }
 
 type transactionRepository struct {
@@ -23,26 +22,24 @@ func NewTransactionRepository(cfg *TransactionRepositoryConfig) TransactionRepos
 	return &transactionRepository{db: cfg.DB}
 }
 
-func (r *transactionRepository) GetTransactionsByUserId(userId int) ([]entity.Transaction, error) {
+func (r *transactionRepository) GetTransactions(filters map[string]interface{}) ([]entity.Transaction, error) {
 	var transactions []entity.Transaction
-	
-	result := r.db.Where("user_id = ?", userId).Find(&transactions)
-	if result.Error != nil {
-		return nil, result.Error
+
+	query := r.db.
+		Joins("TransactionType").
+		Joins("TransactionCategory")
+
+	if userId, ok := filters["user_id"]; ok {
+		query = query.Where("transactions.user_id = ?", userId)
+	}
+	if typeName, ok := filters["type_name"]; ok {
+		query = query.Where("transaction_types.name = ?", typeName)
+	}
+	if categoryName, ok := filters["category_name"]; ok {
+		query = query.Where("transaction_categories.name = ?", categoryName)
 	}
 
-	return transactions, nil
-}
-
-func (r *transactionRepository) GetTransactionByType(typeName string) ([]entity.Transaction, error) {
-	var transactions []entity.Transaction
-
-	result := r.db.
-		Joins("TransactionType").
-		Joins("TransactionCategory").
-		Where("transaction_types.name = ?", typeName).
-		Find(&transactions)
-	
+	result := query.Find(&transactions)
 	if result.Error != nil {
 		return nil, result.Error
 	}

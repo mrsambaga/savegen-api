@@ -21,7 +21,7 @@ func NewRouter(cfg *RouterConfig) *gin.Engine {
 	})
 
 	router.GET("/books", h.GetBooks)
-	router.GET("/transactions", h.GetTransactionsByUserId)
+	router.GET("/transactions", h.GetTransactions)
 	
 	return router
 }
