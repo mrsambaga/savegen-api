@@ -13,13 +13,20 @@ func createRouter() *gin.Engine {
 	bookRepository := repository.NewBookRepository(&repository.BookRepositoryConfig{
 		DB: db.Get(),
 	})
+	userRepository := repository.NewUserRepository(&repository.UserRepositoryConfig{
+		DB: db.Get(),
+	})
 
 	bookUsecase := usecase.NewBookUsecase(&usecase.BookUsecaseConfig{
 		BookRepository: bookRepository,
 	})
+	userUsecase := usecase.NewUserUsecase(&usecase.UserUsecaseConfig{
+		UserRepository: userRepository,
+	})
 
 	return NewRouter(&RouterConfig{
 		BookUsecase: bookUsecase,
+		UserUsecase: userUsecase,
 	})
 }
 
