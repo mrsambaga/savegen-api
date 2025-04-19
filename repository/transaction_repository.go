@@ -9,6 +9,7 @@ import (
 
 type TransactionRepository interface {
 	GetTransactions(request dto.TransactionRequest) ([]entity.Transaction, error)
+	CreateTransaction(transaction entity.Transaction) (entity.Transaction, error)
 }
 
 type transactionRepository struct {
@@ -41,4 +42,13 @@ func (r *transactionRepository) GetTransactions(request dto.TransactionRequest) 
 	}
 
 	return transactions, nil
+}
+
+func (r *transactionRepository) CreateTransaction(transaction entity.Transaction) (entity.Transaction, error) {
+	result := r.db.Create(&transaction)
+	if result.Error != nil {
+		return entity.Transaction{}, result.Error
+	}
+
+	return transaction, nil
 }

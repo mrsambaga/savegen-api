@@ -24,6 +24,7 @@ func NewRouter(cfg *RouterConfig) *gin.Engine {
 
 	router.GET("/books", h.GetBooks)
 	router.GET("/transactions", h.GetTransactions)
+	router.POST("/transactions", h.CreateTransaction)
 	router.POST("/users", h.CreateUser)
 	
 	return router

@@ -7,6 +7,14 @@ type TransactionRequest struct {
 	TypeName    *string `json:"type_name" form:"type_name"`
 }
 
+type TransactionCreateRequest struct {
+	UserID      		*int    	`json:"user_id" form:"user_id"`
+	Amount      		*float64 	`json:"amount" form:"amount"`
+	Detail      		*string 	`json:"detail" form:"detail"`
+	TransactionType 	*string 	`json:"transaction_type" form:"transaction_type"`
+	TransactionCategory *string 	`json:"transaction_category" form:"transaction_category"`
+}
+
 type TransactionResponse struct {
 	ID          		int       `json:"id"`
 	UserID      		int       `json:"user_id"`
