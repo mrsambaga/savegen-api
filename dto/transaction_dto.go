@@ -3,8 +3,8 @@ package dto
 import "time"
 
 type TransactionRequest struct {
-	UserID      *int    `json:"user_id" form:"user_id"`
-	TypeName    *string `json:"type_name" form:"type_name"`
+	UserID      	*int    `json:"user_id" form:"user_id"`
+	TransactionType *string `json:"transaction_type" form:"transaction_type"`
 }
 
 type TransactionCreateRequest struct {

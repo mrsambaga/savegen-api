@@ -32,8 +32,8 @@ func (r *transactionRepository) GetTransactions(request dto.TransactionRequest) 
 	if request.UserID != nil {
 		query = query.Where("transactions.user_id = ?", request.UserID)
 	}
-	if request.TypeName != nil {
-		query = query.Where("transaction_types.name = ?", request.TypeName)
+	if request.TransactionType != nil {
+		query = query.Where("transaction_types.name = ?", request.TransactionType)
 	}
 
 	result := query.Find(&transactions)
