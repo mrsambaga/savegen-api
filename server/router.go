@@ -10,9 +10,6 @@ import (
 )
 
 func createRouter() *gin.Engine {
-	bookRepository := repository.NewBookRepository(&repository.BookRepositoryConfig{
-		DB: db.Get(),
-	})
 	userRepository := repository.NewUserRepository(&repository.UserRepositoryConfig{
 		DB: db.Get(),
 	})
@@ -26,9 +23,6 @@ func createRouter() *gin.Engine {
 		DB: db.Get(),
 	})
 
-	bookUsecase := usecase.NewBookUsecase(&usecase.BookUsecaseConfig{
-		BookRepository: bookRepository,
-	})
 	userUsecase := usecase.NewUserUsecase(&usecase.UserUsecaseConfig{
 		UserRepository: userRepository,
 	})
@@ -39,7 +33,6 @@ func createRouter() *gin.Engine {
 	})
 
 	return NewRouter(&RouterConfig{
-		BookUsecase: bookUsecase,
 		UserUsecase: userUsecase,
 		TransactionUsecase: transactionUsecase,
 	})
