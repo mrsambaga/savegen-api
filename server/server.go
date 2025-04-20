@@ -23,6 +23,7 @@ func NewRouter(cfg *RouterConfig) *gin.Engine {
 	router.GET("/transactions", h.GetTransactions)
 	router.POST("/transactions", h.CreateTransaction)
 	router.POST("/users", h.CreateUser)
-	
+	router.GET("/users/:id", h.GetUserById)
+
 	return router
 }

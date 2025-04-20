@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"savegen-api/dto"
 	"savegen-api/usecase"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -41,3 +42,36 @@ func (h *Handler) CreateUser(c *gin.Context) {
 
 	c.JSON(http.StatusOK, response)
 }
+
+func (h *Handler) GetUserById(c *gin.Context) {
+	id := c.Param("id")
+
+	userID, err := strconv.Atoi(id)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code":     "BAD_REQUEST",
+			"messages": "Invalid user ID",
+			"data":     nil,
+		})
+		return
+	}
+
+	user, err := h.userUsecase.GetUserById(userID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"code":     "INTERNAL_SERVER_ERROR",
+			"messages": err.Error(),
+			"data":     nil,
+		})
+		return
+	}
+
+	response := dto.UserCreateResponse{
+		ID:        user.ID,
+		Username:  user.Username,
+		CreatedAt: user.CreatedAt,
+	}
+
+	c.JSON(http.StatusOK, response)
+}
+
