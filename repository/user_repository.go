@@ -2,6 +2,7 @@ package repository
 
 import (
 	"savegen-api/entity"
+	"savegen-api/model"
 
 	"gorm.io/gorm"
 )
@@ -37,7 +38,7 @@ func (r *userRepository) GetUserById(id int) (entity.User, error) {
 	
 	result := r.db.First(&user, id)
 	if result.Error != nil {
-		return entity.User{}, result.Error
+		return entity.User{}, model.ErrNotFound{Resource: "User"}
 	}
 
 	return user, nil

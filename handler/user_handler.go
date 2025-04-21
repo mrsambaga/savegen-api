@@ -3,7 +3,9 @@ package handler
 import (
 	"net/http"
 	"savegen-api/dto"
+	"savegen-api/model"
 	"savegen-api/usecase"
+	"savegen-api/util"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -16,21 +18,13 @@ type UserHandler struct {
 func (h *Handler) CreateUser(c *gin.Context) {
 	var request dto.UserCreateRequest
 	if err := c.ShouldBindJSON(&request); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"code":     "BAD_REQUEST",
-			"messages": "Invalid request parameters",
-			"data":     nil,
-		})
+		util.RespondWithError(c, err)
 		return
 	}
 
 	user, err := h.userUsecase.CreateUser(request)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"code":     "INTERNAL_SERVER_ERROR",
-			"messages": err.Error(),
-			"data":     nil,
-		})
+		util.RespondWithError(c, err)
 		return
 	}
 
@@ -48,21 +42,13 @@ func (h *Handler) GetUserById(c *gin.Context) {
 
 	userID, err := strconv.Atoi(id)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"code":     "BAD_REQUEST",
-			"messages": "Invalid user ID",
-			"data":     nil,
-		})
+		util.RespondWithError(c, model.ErrInvalidInput{Field: "id", Reason: "Must be a number"})
 		return
 	}
 
 	user, err := h.userUsecase.GetUserById(userID)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"code":     "INTERNAL_SERVER_ERROR",
-			"messages": err.Error(),
-			"data":     nil,
-		})
+		util.RespondWithError(c, err)
 		return
 	}
 
