@@ -55,6 +55,7 @@ func (h *Handler) GetUserById(c *gin.Context) {
 	response := dto.UserCreateResponse{
 		ID:        user.ID,
 		Username:  user.Username,
+		Email:     user.Email,
 		CreatedAt: user.CreatedAt,
 	}
 
