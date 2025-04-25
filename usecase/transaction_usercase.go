@@ -4,6 +4,7 @@ import (
 	"savegen-api/dto"
 	"savegen-api/entity"
 	"savegen-api/repository"
+	"time"
 )
 
 type TransactionUsecase interface {
@@ -51,13 +52,22 @@ func (t *transactionUsecase) CreateTransaction(request dto.TransactionCreateRequ
 		return entity.Transaction{}, err
 	}
 
+	var date time.Time
+	date, err = time.Parse(time.RFC3339, *request.Date)
+	if err != nil {
+		date, err = time.Parse("2006-01-02", *request.Date)
+		if err != nil {
+			return entity.Transaction{}, err
+		}
+	}
+
 	transaction := entity.Transaction{
 		UserID: *request.UserID,
 		Detail: *request.Detail,
 		Amount: *request.Amount,
 		TransactionTypeID: transactionType.ID,
 		TransactionCategoryID: transactionCategory.ID,
-		Date: *request.Date,
+		Date: date,
 	}
 
 	result, err := t.transactionRepository.CreateTransaction(transaction)
