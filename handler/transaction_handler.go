@@ -42,6 +42,7 @@ func (h *Handler) GetTransactions(c *gin.Context) {
 			TransactionType:      	t.TransactionType.Name,
 			TransactionCategory:  	t.TransactionCategory.Name,
 			Detail:    				t.Detail,
+			Date:    				t.Date,
 			CreatedAt: 				t.CreatedAt,
 		})
 	}
@@ -83,6 +84,7 @@ func (h *Handler) CreateTransaction(c *gin.Context) {
 		TransactionType:      	transaction.TransactionType.Name,
 		TransactionCategory:  	transaction.TransactionCategory.Name,
 		Detail:    				transaction.Detail,
+		Date:    				transaction.Date,
 		CreatedAt: 				transaction.CreatedAt,
 	}
 

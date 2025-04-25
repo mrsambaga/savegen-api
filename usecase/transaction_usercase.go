@@ -57,6 +57,7 @@ func (t *transactionUsecase) CreateTransaction(request dto.TransactionCreateRequ
 		Amount: *request.Amount,
 		TransactionTypeID: transactionType.ID,
 		TransactionCategoryID: transactionCategory.ID,
+		Date: *request.Date,
 	}
 
 	result, err := t.transactionRepository.CreateTransaction(transaction)

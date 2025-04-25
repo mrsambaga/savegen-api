@@ -13,6 +13,7 @@ type TransactionCreateRequest struct {
 	Detail      		*string 	`json:"detail" form:"detail"`
 	TransactionType 	*string 	`json:"transaction_type" form:"transaction_type"`
 	TransactionCategory *string 	`json:"transaction_category" form:"transaction_category"`
+	Date      			*time.Time 	`json:"date" form:"date"`
 }
 
 type TransactionResponse struct {
@@ -22,6 +23,7 @@ type TransactionResponse struct {
 	TransactionType     string    `json:"transaction_type"`
 	TransactionCategory string    `json:"transaction_category"`
 	Detail      		string    `json:"detail"`
+	Date      			time.Time `json:"date"`
 	CreatedAt   		time.Time `json:"created_at"`
 }
 

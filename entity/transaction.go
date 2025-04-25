@@ -9,6 +9,7 @@ type Transaction struct {
 	UserID      			int       			`json:"user_id" gorm:"foreignKey:UserID"`
 	Amount      			float64   			`json:"amount"`
 	Detail      			string    			`json:"detail"`
+	Date      				time.Time   		`json:"date"`
 	CreatedAt   			time.Time 			`json:"created_at"`
 	TransactionTypeID  		int                	`json:"transaction_type_id" gorm:"column:type"`
 	TransactionCategoryID 	int             	`json:"transaction_category_id" gorm:"column:category"`
