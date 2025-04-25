@@ -4,6 +4,7 @@ import "time"
 
 type UserCreateRequest struct {
 	Username string `json:"username"`
+	Email    string `json:"email"`
 }
 
 type UserCreateResponse struct {
