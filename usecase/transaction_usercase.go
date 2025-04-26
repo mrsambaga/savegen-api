@@ -42,18 +42,8 @@ func (t *transactionUsecase) GetTransactions(request dto.TransactionRequest) ([]
 }
 
 func (t *transactionUsecase) CreateTransaction(request dto.TransactionCreateRequest) (entity.Transaction, error) {
-	transactionType, err := t.transactionTypeRepository.GetTransactionTypeByName(*request.TransactionType)
-	if err != nil {
-		return entity.Transaction{}, err
-	}
-
-	transactionCategory, err := t.transactionCategoryRepository.GetTransactionCategoryByName(*request.TransactionCategory)
-	if err != nil {
-		return entity.Transaction{}, err
-	}
-
 	var date time.Time
-	date, err = time.Parse(time.RFC3339, *request.Date)
+	date, err := time.Parse(time.RFC3339, *request.Date)
 	if err != nil {
 		date, err = time.Parse("2006-01-02", *request.Date)
 		if err != nil {
@@ -65,8 +55,8 @@ func (t *transactionUsecase) CreateTransaction(request dto.TransactionCreateRequ
 		UserID: *request.UserID,
 		Detail: *request.Detail,
 		Amount: *request.Amount,
-		TransactionType: transactionType,
-		TransactionCategory: transactionCategory,
+		TransactionTypeID: *request.TransactionType,
+		TransactionCategoryID: *request.TransactionCategory,
 		Date: date,
 	}
 
