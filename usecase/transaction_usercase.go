@@ -65,8 +65,8 @@ func (t *transactionUsecase) CreateTransaction(request dto.TransactionCreateRequ
 		UserID: *request.UserID,
 		Detail: *request.Detail,
 		Amount: *request.Amount,
-		TransactionTypeID: transactionType.ID,
-		TransactionCategoryID: transactionCategory.ID,
+		TransactionType: transactionType,
+		TransactionCategory: transactionCategory,
 		Date: date,
 	}
 
