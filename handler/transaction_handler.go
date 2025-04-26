@@ -33,14 +33,14 @@ func (h *Handler) GetTransactions(c *gin.Context) {
 		return
 	}
 
-	var responseData []dto.TransactionResponse
+	var responseData []dto.GetTransactionResponse
 	for _, t := range transactions {
-		responseData = append(responseData, dto.TransactionResponse{
+		responseData = append(responseData, dto.GetTransactionResponse{
 			ID:        				t.ID,
 			UserID:    				t.UserID,
 			Amount:    				t.Amount,
-			TransactionType:      	t.TransactionTypeID,
-			TransactionCategory:  	t.TransactionCategoryID,
+			TransactionType:      	t.TransactionType.Name,
+			TransactionCategory:  	t.TransactionCategory.Name,
 			Detail:    				t.Detail,
 			Date:    				t.Date.Format("2006-01-02"),
 			CreatedAt: 				t.CreatedAt,
@@ -77,7 +77,7 @@ func (h *Handler) CreateTransaction(c *gin.Context) {
 		return
 	}
 
-	response := dto.TransactionResponse{
+	response := dto.CreateTransactionResponse{
 		ID:        				transaction.ID,
 		UserID:    				transaction.UserID,
 		Amount:    				transaction.Amount,

@@ -16,7 +16,7 @@ type TransactionCreateRequest struct {
 	Date      			*string 	`json:"date" form:"date"`
 }
 
-type TransactionResponse struct {
+type CreateTransactionResponse struct {
 	ID          		int       `json:"id"`
 	UserID      		int       `json:"user_id"`
 	Amount      		float64   `json:"amount"`
@@ -27,8 +27,19 @@ type TransactionResponse struct {
 	CreatedAt   		time.Time `json:"created_at"`
 }
 
+type GetTransactionResponse struct {
+	ID          		int       `json:"id"`
+	UserID      		int       `json:"user_id"`
+	Amount      		float64   `json:"amount"`
+	TransactionType     string    `json:"transaction_type"`
+	TransactionCategory	string    `json:"transaction_category"`
+	Detail      		string    `json:"detail"`
+	Date      			string    `json:"date"` 
+	CreatedAt   		time.Time `json:"created_at"`
+}
+
 type TransactionListResponse struct {
-	Code     string              	`json:"code"`
-	Messages string              	`json:"messages"`
-	Data     []TransactionResponse 	`json:"data"`
+	Code     string              		`json:"code"`
+	Messages string              		`json:"messages"`
+	Data     []GetTransactionResponse 	`json:"data"`
 } 
