@@ -42,7 +42,7 @@ INSERT INTO transaction_types (name) VALUES
 
 -- Insert default transaction categories
 INSERT INTO transaction_categories (name) VALUES 
-('food & drink'),
+('foodanddrink'),
 ('bills'),
 ('salary'),
 ('rent'),
