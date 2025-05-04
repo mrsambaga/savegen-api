@@ -64,17 +64,19 @@ INSERT INTO users (username, email) VALUES
 ('Thor Odinson', 'thor@gmail.com');
 
 INSERT INTO transactions (user_id, amount, type, category, detail, date) VALUES 
-(1, 20000, 1, 1, 'Ketoprak', '2025-01-01'),
-(1, 50000, 1, 2, 'Mobile internet data', '2025-01-02'),
-(1, 10000000, 2, 3, '', '2025-01-03'),
-(1, 5000000, 1, 4, 'Monthly kos', '2025-02-04'),
-(1, 200000, 1, 5, 'Weekly groceries', '2025-02-05'),
-(1, 15000, 1, 6, 'Topup Transjakarta', '2025-02-06'),
-(1, 300000, 1, 7, 'Ticket to yogyakarta', '2025-03-07'),
-(1, 500000, 2, 8, 'Adidas running shoes', '2025-04-08'),
-(1, 150000, 1, 9, 'Watch movie in XXI', '2025-04-09'),
-(1, 10000000, 2, 3, '', '2025-04-10'),
-(1, 2000000, 1, 10, 'College Tuition', '2025-04-10'),
-(1, 1100000, 1, 11, 'Monthly family expense', '2025-04-11'),
-(1, 150000, 1, 12, 'Vitamin pills', '2025-04-12'),
-(1, 7000, 1, 13, 'Parking fee', '2025-04-13');
+(1, 25000, 1, 1, 'Lunch at Warung Makan', '2025-01-02'),
+(1, 40000, 1, 2, 'Electricity bill', '2025-01-03'),
+(1, 10000000, 2, 3, 'January Salary', '2025-01-05'),
+(1, 200000, 1, 5, 'Groceries at Alfamart', '2025-01-08'),
+(1, 5000000, 1, 4, 'Monthly rent', '2025-02-02'),
+(1, 200000, 1, 5, 'Groceries at Superindo', '2025-02-04'),
+(1, 15000, 1, 6, 'Train top-up', '2025-02-06'),
+(1, 10000000, 2, 3, 'February Salary', '2025-02-10'),
+(1, 300000, 1, 7, 'Train to Bandung', '2025-03-01'),
+(1, 150000, 1, 9, 'Cinema ticket', '2025-03-05'),
+(1, 75000, 1, 1, 'Dinner at Padang restaurant', '2025-03-10'),
+(1, 6000000, 2, 3, 'Bonus payout', '2025-03-15'),
+(1, 2000000, 1, 10, 'Tuition fee', '2025-04-01'),
+(1, 1100000, 1, 11, 'Family monthly', '2025-04-05'),
+(1, 150000, 1, 12, 'Pharmacy expense', '2025-04-06'),
+(1, 10000000, 2, 3, 'April Salary', '2025-04-10');
