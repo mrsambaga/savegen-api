@@ -79,4 +79,7 @@ INSERT INTO transactions (user_id, amount, type, category, detail, date) VALUES
 (1, 2000000, 1, 10, 'Tuition fee', '2025-04-01'),
 (1, 1100000, 1, 11, 'Family monthly', '2025-04-05'),
 (1, 150000, 1, 12, 'Pharmacy expense', '2025-04-06'),
-(1, 10000000, 2, 3, 'April Salary', '2025-04-10');
+(1, 10000000, 2, 3, 'April Salary', '2025-04-10'),
+(1, 150000, 1, 1, 'Brunch with friends', '2025-05-01'),
+(1, 5000000, 2, 3, 'Freelance project payment', '2025-05-02'),
+(1, 350000, 1, 8, 'Bought Bluetooth headphones', '2025-05-04');
