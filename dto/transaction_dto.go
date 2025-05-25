@@ -42,4 +42,10 @@ type TransactionListResponse struct {
 	Code     string              		`json:"code"`
 	Messages string              		`json:"messages"`
 	Data     []GetTransactionResponse 	`json:"data"`
+}
+
+type TransactionResponse struct {
+	Code     string              		`json:"code"`
+	Messages string              		`json:"messages"`
+	Data     CreateTransactionResponse 	`json:"data"`
 } 

@@ -77,7 +77,7 @@ func (h *Handler) CreateTransaction(c *gin.Context) {
 		return
 	}
 
-	response := dto.CreateTransactionResponse{
+	responseData := dto.CreateTransactionResponse{
 		ID:        				transaction.ID,
 		UserID:    				transaction.UserID,
 		Amount:    				transaction.Amount,
@@ -86,6 +86,12 @@ func (h *Handler) CreateTransaction(c *gin.Context) {
 		Detail:    				transaction.Detail,
 		Date:    				transaction.Date.Format("2006-01-02"),
 		CreatedAt: 				transaction.CreatedAt,
+	}
+
+	response := dto.TransactionResponse{
+		Code:     "SUCCESS",
+		Messages: "Success",
+		Data:     responseData,
 	}
 
 	c.JSON(http.StatusOK, response)
