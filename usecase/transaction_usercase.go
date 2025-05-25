@@ -51,12 +51,22 @@ func (t *transactionUsecase) CreateTransaction(request dto.TransactionCreateRequ
 		}
 	}
 
+	transactionType, err := t.transactionTypeRepository.GetTransactionTypeByName(*request.TypeName)
+	if err != nil {
+		return entity.Transaction{}, err
+	}
+
+	transactionCategory, err := t.transactionCategoryRepository.GetTransactionCategoryByName(*request.CategoryName)
+	if err != nil {
+		return entity.Transaction{}, err
+	}
+
 	transaction := entity.Transaction{
 		UserID: *request.UserID,
 		Detail: *request.Detail,
 		Amount: *request.Amount,
-		TransactionTypeID: *request.TransactionType,
-		TransactionCategoryID: *request.TransactionCategory,
+		TransactionTypeID: transactionType.ID,
+		TransactionCategoryID: transactionCategory.ID,
 		Date: date,
 	}
 
