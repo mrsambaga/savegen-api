@@ -43,7 +43,7 @@ func (h *Handler) GetUserByEmail(c *gin.Context) {
 	email := c.Param("email")
 
 	if email == "" {
-		c.JSON(http.StatusInternalServerError, gin.H{
+		c.JSON(http.StatusBadRequest, gin.H{
 			"code":     "BAD_REQUEST",
 			"messages": "Email is mandatory",
 			"data":     nil,
@@ -52,7 +52,7 @@ func (h *Handler) GetUserByEmail(c *gin.Context) {
 	}
 
 	if (!isValidEmail(email)) {
-		c.JSON(http.StatusInternalServerError, gin.H{
+		c.JSON(http.StatusBadRequest, gin.H{
 			"code":     "BAD_REQUEST",
 			"messages": "Email is invalid",
 			"data":     nil,
