@@ -10,6 +10,7 @@ type UserUsecase interface {
 	CreateUser(request dto.UserCreateRequest) (entity.User, error)
 	GetUserById(id int) (entity.User, error)
 	GetUserByEmail(email string) (entity.User, error)
+	UpdateUser(requestDTO dto.UserUpdateRequest) (entity.User, error)
 }
 
 type userUsecase struct {
@@ -40,3 +41,6 @@ func (u *userUsecase) GetUserByEmail(email string) (entity.User, error) {
 	return u.userRepository.GetUserByEmail(email)
 }
 
+func (u *userUsecase) UpdateUser(requestDTO dto.UserUpdateRequest) (entity.User, error) {
+	return u.userRepository.UpdateUser(requestDTO)
+}

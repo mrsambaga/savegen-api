@@ -7,6 +7,11 @@ type UserCreateRequest struct {
 	Email    string `json:"email"`
 }
 
+type UserUpdateRequest struct {
+	Username string `json:"username" binding:"required,min=3,max=50,string"`
+	Email    string `json:"email" binding:"required,email"`
+}
+
 type UserCreateResponse struct {
 	ID        int       `json:"id"`
 	Username  string    `json:"username"`

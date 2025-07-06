@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"savegen-api/dto"
 	"savegen-api/entity"
 	"savegen-api/model"
 
@@ -11,6 +12,7 @@ type UserRepository interface {
 	CreateUser(user entity.User) (entity.User, error)
 	GetUserById(id int) (entity.User, error)
 	GetUserByEmail(email string) (entity.User, error)
+	UpdateUser(requestDTO dto.UserUpdateRequest) (entity.User, error)
 }
 
 type userRepository struct {
@@ -51,6 +53,27 @@ func (r *userRepository) GetUserByEmail(email string) (entity.User, error) {
 	result := r.db.Where("email = ?", email).First(&user)
 	if result.Error != nil {
 		return entity.User{}, model.ErrNotFound{Resource: "User"}
+	}
+
+	return user, nil
+}
+
+func (r *userRepository) UpdateUser(requestDTO dto.UserUpdateRequest) (entity.User, error) {
+	var user entity.User
+
+	result := r.db.Where("email = ?", requestDTO.Email).First(&user)
+	if result.Error != nil {
+		if result.Error == gorm.ErrRecordNotFound {
+			return entity.User{}, model.ErrNotFound{Resource: "User"}
+		}
+		return entity.User{}, model.ErrNotFound{Resource: "User"}
+	}
+
+	user.Username = requestDTO.Username;
+
+	result = r.db.Save(&user)
+	if result.Error != nil {
+		return entity.User{}, result.Error
 	}
 
 	return user, nil
