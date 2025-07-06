@@ -36,31 +36,6 @@ func (h *Handler) CreateUser(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
-// func (h *Handler) GetUserById(c *gin.Context) {
-// 	id := c.Param("id")
-
-// 	userID, err := strconv.Atoi(id)
-// 	if err != nil {
-// 		util.RespondWithError(c, model.ErrInvalidInput{Field: "id", Reason: "Must be a number"})
-// 		return
-// 	}
-
-// 	user, err := h.userUsecase.GetUserById(userID)
-// 	if err != nil {
-// 		util.RespondWithError(c, err)
-// 		return
-// 	}
-
-// 	response := dto.UserCreateResponse{
-// 		ID:        user.ID,
-// 		Username:  user.Username,
-// 		Email:     user.Email,
-// 		CreatedAt: user.CreatedAt,
-// 	}
-
-// 	c.JSON(http.StatusOK, response)
-// }
-
 func (h *Handler) GetUserByEmail(c *gin.Context) {
 	email := c.Param("email")
 
