@@ -10,6 +10,7 @@ import (
 type UserRepository interface {
 	CreateUser(user entity.User) (entity.User, error)
 	GetUserById(id int) (entity.User, error)
+	GetUserByEmail(email string) (entity.User, error)
 }
 
 type userRepository struct {
@@ -37,6 +38,17 @@ func (r *userRepository) GetUserById(id int) (entity.User, error) {
 	var user entity.User
 	
 	result := r.db.First(&user, id)
+	if result.Error != nil {
+		return entity.User{}, model.ErrNotFound{Resource: "User"}
+	}
+
+	return user, nil
+}
+
+func (r *userRepository) GetUserByEmail(email string) (entity.User, error) {
+	var user entity.User
+	
+	result := r.db.Where("email = ?", email).First(&user)
 	if result.Error != nil {
 		return entity.User{}, model.ErrNotFound{Resource: "User"}
 	}

@@ -9,6 +9,7 @@ import (
 type UserUsecase interface {
 	CreateUser(request dto.UserCreateRequest) (entity.User, error)
 	GetUserById(id int) (entity.User, error)
+	GetUserByEmail(email string) (entity.User, error)
 }
 
 type userUsecase struct {
@@ -33,5 +34,9 @@ func (u *userUsecase) CreateUser(request dto.UserCreateRequest) (entity.User, er
 
 func (u *userUsecase) GetUserById(id int) (entity.User, error) {
 	return u.userRepository.GetUserById(id)
+}
+
+func (u *userUsecase) GetUserByEmail(email string) (entity.User, error) {
+	return u.userRepository.GetUserByEmail(email)
 }
 
