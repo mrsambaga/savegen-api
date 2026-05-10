@@ -78,6 +78,17 @@ func (h *Handler) GetUserByEmail(c *gin.Context) {
 }
 
 func (h *Handler) UpdateUserByEmail(c *gin.Context) {
+	email := c.Param("email")
+
+	if !isValidEmail(email) {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code":     "BAD_REQUEST",
+			"messages": "Email is invalid",
+			"data":     nil,
+		})
+		return
+	}
+
 	var request dto.UserUpdateRequest
 	if err := c.ShouldBindJSON(&request); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -88,16 +99,7 @@ func (h *Handler) UpdateUserByEmail(c *gin.Context) {
 		return
 	}
 
-	if (!isValidEmail(request.Email)) {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"code":     "BAD_REQUEST",
-			"messages": "Email is invalid",
-			"data":     nil,
-		})
-		return
-	}
-
-	user, err := h.userUsecase.UpdateUser(request)
+	user, err := h.userUsecase.UpdateUser(email, request)
 	if err != nil {
 		util.RespondWithError(c, err)
 		return

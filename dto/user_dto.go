@@ -8,8 +8,7 @@ type UserCreateRequest struct {
 }
 
 type UserUpdateRequest struct {
-	Username      string   `json:"username" binding:"required,min=3,max=50,string"`
-	Email         string   `json:"email" binding:"required,email"`
+	Username      *string  `json:"username" binding:"omitempty,min=3,max=50"`
 	MonthlyBudget *float64 `json:"monthly_budget" binding:"omitempty,gte=0"`
 }
 

@@ -12,7 +12,7 @@ type UserRepository interface {
 	CreateUser(user entity.User) (entity.User, error)
 	GetUserById(id int) (entity.User, error)
 	GetUserByEmail(email string) (entity.User, error)
-	UpdateUser(requestDTO dto.UserUpdateRequest) (entity.User, error)
+	UpdateUser(email string, requestDTO dto.UserUpdateRequest) (entity.User, error)
 }
 
 type userRepository struct {
@@ -58,10 +58,10 @@ func (r *userRepository) GetUserByEmail(email string) (entity.User, error) {
 	return user, nil
 }
 
-func (r *userRepository) UpdateUser(requestDTO dto.UserUpdateRequest) (entity.User, error) {
+func (r *userRepository) UpdateUser(email string, requestDTO dto.UserUpdateRequest) (entity.User, error) {
 	var user entity.User
 
-	result := r.db.Where("email = ?", requestDTO.Email).First(&user)
+	result := r.db.Where("email = ?", email).First(&user)
 	if result.Error != nil {
 		if result.Error == gorm.ErrRecordNotFound {
 			return entity.User{}, model.ErrNotFound{Resource: "User"}
@@ -69,7 +69,9 @@ func (r *userRepository) UpdateUser(requestDTO dto.UserUpdateRequest) (entity.Us
 		return entity.User{}, model.ErrNotFound{Resource: "User"}
 	}
 
-	user.Username = requestDTO.Username
+	if requestDTO.Username != nil {
+		user.Username = *requestDTO.Username
+	}
 	if requestDTO.MonthlyBudget != nil {
 		user.MonthlyBudget = requestDTO.MonthlyBudget
 	}
