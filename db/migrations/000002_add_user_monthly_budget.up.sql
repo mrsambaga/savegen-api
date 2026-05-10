@@ -1,0 +1,2 @@
+ALTER TABLE users
+    ADD COLUMN IF NOT EXISTS monthly_budget DECIMAL(10,2) NULL;

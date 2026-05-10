@@ -67,10 +67,11 @@ func (h *Handler) GetUserByEmail(c *gin.Context) {
 	}
 
 	response := dto.UserCreateResponse{
-		ID:        user.ID,
-		Username:  user.Username,
-		Email:     user.Email,
-		CreatedAt: user.CreatedAt,
+		ID:            user.ID,
+		Username:      user.Username,
+		Email:         user.Email,
+		MonthlyBudget: user.MonthlyBudget,
+		CreatedAt:     user.CreatedAt,
 	}
 
 	c.JSON(http.StatusOK, response)
@@ -103,10 +104,11 @@ func (h *Handler) UpdateUserByEmail(c *gin.Context) {
 	}
 
 	response := dto.UserCreateResponse{
-		ID:        user.ID,
-		Username:  user.Username,
-		Email:     user.Email,
-		CreatedAt: user.CreatedAt,
+		ID:            user.ID,
+		Username:      user.Username,
+		Email:         user.Email,
+		MonthlyBudget: user.MonthlyBudget,
+		CreatedAt:     user.CreatedAt,
 	}
 
 	c.JSON(http.StatusOK, response)

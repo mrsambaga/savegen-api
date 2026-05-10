@@ -8,13 +8,15 @@ type UserCreateRequest struct {
 }
 
 type UserUpdateRequest struct {
-	Username string `json:"username" binding:"required,min=3,max=50,string"`
-	Email    string `json:"email" binding:"required,email"`
+	Username      string   `json:"username" binding:"required,min=3,max=50,string"`
+	Email         string   `json:"email" binding:"required,email"`
+	MonthlyBudget *float64 `json:"monthly_budget" binding:"omitempty,gte=0"`
 }
 
 type UserCreateResponse struct {
-	ID        int       `json:"id"`
-	Username  string    `json:"username"`
-	Email     string    `json:"email"`
-	CreatedAt time.Time `json:"created_at"`
+	ID            int       `json:"id"`
+	Username      string    `json:"username"`
+	Email         string    `json:"email"`
+	MonthlyBudget *float64  `json:"monthly_budget"`
+	CreatedAt     time.Time `json:"created_at"`
 }

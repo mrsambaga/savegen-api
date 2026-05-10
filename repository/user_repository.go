@@ -69,7 +69,10 @@ func (r *userRepository) UpdateUser(requestDTO dto.UserUpdateRequest) (entity.Us
 		return entity.User{}, model.ErrNotFound{Resource: "User"}
 	}
 
-	user.Username = requestDTO.Username;
+	user.Username = requestDTO.Username
+	if requestDTO.MonthlyBudget != nil {
+		user.MonthlyBudget = requestDTO.MonthlyBudget
+	}
 
 	result = r.db.Save(&user)
 	if result.Error != nil {
