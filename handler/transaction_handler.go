@@ -1,11 +1,14 @@
 package handler
 
 import (
+	"errors"
 	"net/http"
 	"savegen-api/dto"
 	"savegen-api/usecase"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 type TransactionHandler struct {
@@ -97,3 +100,39 @@ func (h *Handler) CreateTransaction(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
+func (h *Handler) DeleteTransaction(c *gin.Context) {
+	idParam := c.Param("id")
+	id, err := strconv.Atoi(idParam)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code":     "BAD_REQUEST",
+			"messages": "Invalid transaction id",
+			"data":     nil,
+		})
+		return
+	}
+
+	if err := h.transactionUsecase.DeleteTransaction(id); err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			c.JSON(http.StatusNotFound, gin.H{
+				"code":     "NOT_FOUND",
+				"messages": "Transaction not found",
+				"data":     nil,
+			})
+			return
+		}
+
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"code":     "INTERNAL_SERVER_ERROR",
+			"messages": err.Error(),
+			"data":     nil,
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"code":     "SUCCESS",
+		"messages": "Success",
+		"data":     nil,
+	})
+}

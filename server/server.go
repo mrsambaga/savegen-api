@@ -22,6 +22,7 @@ func NewRouter(cfg *RouterConfig) *gin.Engine {
 
 	router.GET("/transactions", h.GetTransactions)
 	router.POST("/transactions", h.CreateTransaction)
+	router.DELETE("/transactions/:id", h.DeleteTransaction)
 	router.POST("/users", h.CreateUser)
 	router.GET("/users/:email", h.GetUserByEmail)
 	router.PUT("/users", h.UpdateUserByEmail)

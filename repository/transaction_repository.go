@@ -10,6 +10,7 @@ import (
 type TransactionRepository interface {
 	GetTransactions(request dto.TransactionRequest) ([]entity.Transaction, error)
 	CreateTransaction(transaction entity.Transaction) (entity.Transaction, error)
+	DeleteTransaction(id int) error
 }
 
 type transactionRepository struct {
@@ -51,4 +52,17 @@ func (r *transactionRepository) CreateTransaction(transaction entity.Transaction
 	}
 
 	return transaction, nil
+}
+
+func (r *transactionRepository) DeleteTransaction(id int) error {
+	result := r.db.Delete(&entity.Transaction{}, id)
+	if result.Error != nil {
+		return result.Error
+	}
+
+	if result.RowsAffected == 0 {
+		return gorm.ErrRecordNotFound
+	}
+
+	return nil
 }
