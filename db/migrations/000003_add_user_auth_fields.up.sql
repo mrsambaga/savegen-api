@@ -1,0 +1,7 @@
+ALTER TABLE users
+    ADD COLUMN IF NOT EXISTS password_hash VARCHAR(255) NULL,
+    ADD COLUMN IF NOT EXISTS is_guest BOOLEAN NOT NULL DEFAULT FALSE,
+    ADD COLUMN IF NOT EXISTS google_sub VARCHAR(255) NULL;
+
+CREATE UNIQUE INDEX IF NOT EXISTS users_email_unique ON users (email);
+CREATE UNIQUE INDEX IF NOT EXISTS users_google_sub_unique ON users (google_sub) WHERE google_sub IS NOT NULL;

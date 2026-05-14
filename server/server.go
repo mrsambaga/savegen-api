@@ -9,7 +9,8 @@ import (
 
 type RouterConfig struct {
 	TransactionUsecase usecase.TransactionUsecase
-	UserUsecase usecase.UserUsecase
+	UserUsecase        usecase.UserUsecase
+	AuthUsecase        usecase.AuthUsecase
 }
 
 func NewRouter(cfg *RouterConfig) *gin.Engine {
@@ -17,15 +18,30 @@ func NewRouter(cfg *RouterConfig) *gin.Engine {
 
 	h := handler.NewHandler(&handler.HandlerConfig{
 		TransactionUsecase: cfg.TransactionUsecase,
-		UserUsecase: cfg.UserUsecase,
+		UserUsecase:        cfg.UserUsecase,
+		AuthUsecase:        cfg.AuthUsecase,
 	})
 
-	router.GET("/transactions", h.GetTransactions)
-	router.POST("/transactions", h.CreateTransaction)
-	router.DELETE("/transactions/:id", h.DeleteTransaction)
-	router.POST("/users", h.CreateUser)
-	router.GET("/users/:email", h.GetUserByEmail)
-	router.PUT("/users/:email", h.UpdateUserByEmail)
+	api := router.Group("")
+	api.Use(AuthMiddleware())
+	{
+		api.GET("/auth/me", h.Me)
+
+		api.GET("/transactions", h.GetTransactions)
+		api.POST("/transactions", h.CreateTransaction)
+		api.DELETE("/transactions/:id", h.DeleteTransaction)
+
+		api.GET("/users/:email", h.GetUserByEmail)
+		api.PUT("/users/:email", h.UpdateUserByEmail)
+	}
+
+	authApi := router.Group("/auth")
+	{
+		authApi.POST("/register", h.Register)
+		authApi.POST("/login", h.Login)
+		authApi.POST("/guest", h.Guest)
+		authApi.POST("/google", h.GoogleLogin)
+	}
 
 	return router
 }
