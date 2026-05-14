@@ -11,6 +11,7 @@ type TransactionUsecase interface {
 	GetTransactions(request dto.TransactionRequest) ([]entity.Transaction, error)
 	CreateTransaction(request dto.TransactionCreateRequest) (entity.Transaction, error)
 	DeleteTransaction(id int) error
+	DeleteTransactionForUser(id int, userID int) error
 }
 
 type transactionUsecase struct {
@@ -81,4 +82,8 @@ func (t *transactionUsecase) CreateTransaction(request dto.TransactionCreateRequ
 
 func (t *transactionUsecase) DeleteTransaction(id int) error {
 	return t.transactionRepository.DeleteTransaction(id)
+}
+
+func (t *transactionUsecase) DeleteTransactionForUser(id int, userID int) error {
+	return t.transactionRepository.DeleteTransactionForUser(id, userID)
 }

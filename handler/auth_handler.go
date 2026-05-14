@@ -114,23 +114,31 @@ func (h *Handler) GoogleLogin(c *gin.Context) {
 
 const AuthUserIDKey = "auth_user_id"
 
-func (h *Handler) Me(c *gin.Context) {
+func mustAuthUserID(c *gin.Context) (int, bool) {
 	rawID, exists := c.Get(AuthUserIDKey)
 	if !exists {
-		c.JSON(http.StatusUnauthorized, gin.H{
+		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
 			"code":    "UNAUTHORIZED",
 			"message": "Not authenticated",
 			"data":    nil,
 		})
-		return
+		return 0, false
 	}
 	userID, ok := rawID.(int)
 	if !ok {
-		c.JSON(http.StatusUnauthorized, gin.H{
+		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
 			"code":    "UNAUTHORIZED",
 			"message": "Not authenticated",
 			"data":    nil,
 		})
+		return 0, false
+	}
+	return userID, true
+}
+
+func (h *Handler) Me(c *gin.Context) {
+	userID, ok := mustAuthUserID(c)
+	if !ok {
 		return
 	}
 

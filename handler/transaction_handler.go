@@ -26,6 +26,12 @@ func (h *Handler) GetTransactions(c *gin.Context) {
 		return
 	}
 
+	userID, ok := mustAuthUserID(c)
+	if !ok {
+		return
+	}
+	request.UserID = &userID
+
 	transactions, err := h.transactionUsecase.GetTransactions(request)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -70,6 +76,12 @@ func (h *Handler) CreateTransaction(c *gin.Context) {
 		return
 	}
 
+	userID, ok := mustAuthUserID(c)
+	if !ok {
+		return
+	}
+	request.UserID = &userID
+
 	transaction, err := h.transactionUsecase.CreateTransaction(request)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -112,7 +124,12 @@ func (h *Handler) DeleteTransaction(c *gin.Context) {
 		return
 	}
 
-	if err := h.transactionUsecase.DeleteTransaction(id); err != nil {
+	userID, ok := mustAuthUserID(c)
+	if !ok {
+		return
+	}
+
+	if err := h.transactionUsecase.DeleteTransactionForUser(id, userID); err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			c.JSON(http.StatusNotFound, gin.H{
 				"code":     "NOT_FOUND",

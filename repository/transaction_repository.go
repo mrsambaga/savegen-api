@@ -11,6 +11,7 @@ type TransactionRepository interface {
 	GetTransactions(request dto.TransactionRequest) ([]entity.Transaction, error)
 	CreateTransaction(transaction entity.Transaction) (entity.Transaction, error)
 	DeleteTransaction(id int) error
+	DeleteTransactionForUser(id int, userID int) error
 }
 
 type transactionRepository struct {
@@ -56,6 +57,19 @@ func (r *transactionRepository) CreateTransaction(transaction entity.Transaction
 
 func (r *transactionRepository) DeleteTransaction(id int) error {
 	result := r.db.Delete(&entity.Transaction{}, id)
+	if result.Error != nil {
+		return result.Error
+	}
+
+	if result.RowsAffected == 0 {
+		return gorm.ErrRecordNotFound
+	}
+
+	return nil
+}
+
+func (r *transactionRepository) DeleteTransactionForUser(id int, userID int) error {
+	result := r.db.Where("id = ? AND user_id = ?", id, userID).Delete(&entity.Transaction{})
 	if result.Error != nil {
 		return result.Error
 	}
