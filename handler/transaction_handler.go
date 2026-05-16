@@ -42,7 +42,7 @@ func (h *Handler) GetTransactions(c *gin.Context) {
 		return
 	}
 
-	var responseData []dto.GetTransactionResponse
+	responseData := make([]dto.GetTransactionResponse, 0, len(transactions))
 	for _, t := range transactions {
 		responseData = append(responseData, dto.GetTransactionResponse{
 			ID:        				t.ID,
